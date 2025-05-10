@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${pixelifySans.className} min-h-screen antialiased flex justify-center`}
+        className={`${pixelifySans.className} min-h-screen antialiased flex flex-col items-center justify-center gap-24 select-none`}
       >
         <ThemeProvider
           attribute="class"

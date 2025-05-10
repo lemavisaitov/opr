@@ -1,3 +1,4 @@
 export const ROUTES = {
-  home: "home/upload",
+  home: "/home/upload",
+  profile: "/profile",
 } as const;

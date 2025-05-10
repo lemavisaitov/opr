@@ -5,10 +5,14 @@ import {
 } from "@/components/ui/avatar";
 import { JSX } from "react";
 
-export const Avatar = (): JSX.Element => {
+interface AvatarProps {
+  className?: string;
+}
+
+export const Avatar = ({ className }: AvatarProps): JSX.Element => {
   return (
-    <AvatarWrapper>
-      <AvatarImage src="" />
+    <AvatarWrapper className={className}>
+      <AvatarImage width={36} height={36} src="" />
       <AvatarFallback>CN</AvatarFallback>
     </AvatarWrapper>
   );
