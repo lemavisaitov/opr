@@ -1,21 +1,25 @@
 package main
 
 import (
-	"github.com/lemavisaitov/opr/internal/app"
-	"github.com/lemavisaitov/opr/internal/handler"
-	"github.com/lemavisaitov/opr/internal/usecase"
-	"github.com/lemavisaitov/opr/pkg/logger"
-	"github.com/lemavisaitov/opr/tool/yarascanner"
-	"go.uber.org/zap"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/lemavisaitov/opr/internal/app"
+	"github.com/lemavisaitov/opr/internal/handler"
+	"github.com/lemavisaitov/opr/internal/usecase"
+	"github.com/lemavisaitov/opr/pkg/logger"
+	"github.com/lemavisaitov/opr/tool/yarascanner"
+
+	"go.uber.org/zap"
 )
 
 const (
 	YaraRulesDir = "./yara_rules"
+	Port         = "8080"
 )
 
 func main() {
@@ -34,7 +38,7 @@ func main() {
 	handler := handler.NewHandler(yaraUC)
 	router := app.NewRouter(handler)
 	server := http.Server{
-		Addr:              ":8080",
+		Addr:              fmt.Sprintf(":%s", Port),
 		Handler:           router,
 		ReadHeaderTimeout: 60 * time.Second,
 	}

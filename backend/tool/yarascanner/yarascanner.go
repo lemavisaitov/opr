@@ -6,16 +6,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/lemavisaitov/opr/pkg/logger"
-	"go.uber.org/zap"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
 
+	"go.uber.org/zap"
+
 	"github.com/lemavisaitov/opr/internal/apperr"
 	"github.com/lemavisaitov/opr/internal/model"
+	"github.com/lemavisaitov/opr/pkg/logger"
 )
 
 type YaraScanner struct {

@@ -1,0 +1,6 @@
+services:
+  api-gateway:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    container_name: api-gateway

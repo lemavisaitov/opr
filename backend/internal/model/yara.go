@@ -1,9 +1,9 @@
 package model
 
 type RuleOutput struct {
-	Namespace string         `json:"namespace"`
+	Namespace string         `json:"-"`
 	RuleName  string         `json:"ruleName"`
-	MetaInfo  map[string]any `json:"metaInfo"`
+	MetaInfo  map[string]any `json:"-"`
 	FilePath  string         `json:"-"`
 }
 

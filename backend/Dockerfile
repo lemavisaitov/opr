@@ -22,7 +22,6 @@ COPY . .
 RUN mkdir -p /app && \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/api-gateway ./cmd/
 
-#COPY --from=builder /app/api-gateway .
-
 COPY yara_rules ./yara_rules
-#ENTRYPOINT ["./api-gateway"]
+
+ENTRYPOINT ["./api-gateway"]
