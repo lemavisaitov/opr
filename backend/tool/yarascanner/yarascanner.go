@@ -18,15 +18,12 @@ import (
 	"github.com/lemavisaitov/opr/internal/model"
 )
 
-type Config struct {
-	RulesDir string
-}
 type YaraScanner struct {
 	rulesPath string
 }
 
-func New(cfg Config) (*YaraScanner, error) {
-	yaraFiles, err := getRulesFromDir(cfg.RulesDir)
+func New(rulesDir string) (*YaraScanner, error) {
+	yaraFiles, err := getRulesFromDir(rulesDir)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +32,7 @@ func New(cfg Config) (*YaraScanner, error) {
 		return nil, apperr.ErrNoRulesInDir
 	}
 
-	pathToCompiled := cfg.RulesDir + "_compiled"
+	pathToCompiled := rulesDir + "_compiled"
 	if err := compileYaraRules(yaraFiles, pathToCompiled); err != nil {
 		return nil, err
 	}

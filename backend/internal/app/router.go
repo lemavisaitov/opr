@@ -1,13 +1,13 @@
 package app
 
 import (
-	"context"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/lemavisaitov/opr/internal/app/api"
-	"github.com/lemavisaitov/opr/internal/model"
 	"net/http"
 	"time"
+
+	"github.com/lemavisaitov/opr/internal/app/api"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 type Handler interface {

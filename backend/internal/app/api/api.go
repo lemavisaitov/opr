@@ -61,7 +61,6 @@ func MustRender(resp http.ResponseWriter, req *http.Request, v render.Renderer) 
 		responseCode string
 		err          error
 	)
-	ctx := req.Context()
 	switch e := v.(type) {
 	case ErrorResponse:
 		info = e.DebugInfo
