@@ -1,13 +1,13 @@
 package app
 
 import (
+	"github.com/lemavisaitov/opr/internal/app/api"
 	"net/http"
 	"time"
 
-	"github.com/lemavisaitov/opr/internal/app/api"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 type Handler interface {
@@ -17,14 +17,24 @@ type Handler interface {
 func NewRouter(handler Handler) chi.Router {
 	mux := chi.NewRouter()
 
-	mux.Use(middleware.RequestID)
-	mux.Use(middleware.Logger)
-	mux.Use(middleware.Recoverer)
-	mux.Use(middleware.URLFormat)
-	mux.Use(middleware.StripSlashes)
-	mux.Use(middleware.Timeout(60 * time.Second))
+	corsMiddleware := cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"*"},
+		ExposedHeaders: []string{"*"},
+		// ... другие параметры
+	})
+	mux.Use(
+		middleware.RequestID,
+		middleware.Logger,
+		middleware.Recoverer,
+		corsMiddleware,
+		middleware.URLFormat,
+		middleware.StripSlashes,
+		middleware.Timeout(60*time.Second),
+	)
 
-	mux.Post("/upload", api.Method(handler.UploadFile))
+	mux.Post("/api/files/upload", api.Method(handler.UploadFile))
 
 	return mux
 }
