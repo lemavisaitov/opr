@@ -20,16 +20,17 @@ interface HeaderProps {
 }
 
 export const Header = ({ className }: HeaderProps): JSX.Element => {
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  // const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   // TODO: Сделать так, чтобы Drawer выдвигался.
-  const { isUploading, uploadFileToServer } = useFileUpload();
+  const { isUploading } = useFileUpload();
 
   const handleFileSelect = useCallback((file: File) => {
     setSelectedFile(file);
     setIsDrawerOpen(true);
+    console.log(selectedFile, isDrawerOpen, isUploading);
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
