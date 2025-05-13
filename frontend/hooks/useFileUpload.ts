@@ -1,21 +1,22 @@
+import { API_ROUTES } from "@/constants/routes.constant";
 import { useCallback } from "react";
 import useSWRMutation from "swr/mutation";
 
-async function uploadFile(url: string, { arg }: { arg: FormData }) {
-  const res = await fetch(url, {
+const uploadFile = async (url: string, { arg }: { arg: FormData }) => {
+  const response = await fetch(url, {
     method: "POST",
     body: arg,
   });
-
-  if (!res.ok) {
+  // TODO: вынести в отдельный error
+  if (!response.ok) {
     throw new Error("Upload failed");
   }
 
-  return res.json();
-}
+  return response.json();
+};
 
-export function useFileUpload() {
-  const { trigger, isMutating } = useSWRMutation("/api/upload", uploadFile);
+export const useFileUpload = () => {
+  const { trigger, isMutating } = useSWRMutation(API_ROUTES.upload, uploadFile);
 
   const uploadFileToServer = useCallback(
     async (file: File | null) => {
@@ -39,4 +40,4 @@ export function useFileUpload() {
     isUploading: isMutating,
     uploadFileToServer,
   };
-}
+};

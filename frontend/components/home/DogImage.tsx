@@ -19,7 +19,7 @@ export default function DogImage(): JSX.Element {
         className={`object-contain transition-opacity duration-100 ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
-        onLoadingComplete={() => setIsLoaded(true)}
+        onLoad={() => setIsLoaded(true)}
       />
     </div>
   );
