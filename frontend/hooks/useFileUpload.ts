@@ -1,4 +1,5 @@
 import { API_ROUTES } from "@/constants/routes.constant";
+import { Response } from "@/types/response.type";
 import { useCallback } from "react";
 import useSWRMutation from "swr/mutation";
 
@@ -7,7 +8,7 @@ const uploadFile = async (url: string, { arg }: { arg: FormData }) => {
     method: "POST",
     body: arg,
   });
-  // TODO: вынести в отдельный error
+
   if (!response.ok) {
     throw new Error("Upload failed");
   }
@@ -19,7 +20,7 @@ export const useFileUpload = () => {
   const { trigger, isMutating } = useSWRMutation(API_ROUTES.upload, uploadFile);
 
   const uploadFileToServer = useCallback(
-    async (file: File | null) => {
+    async (file: File | undefined) => {
       if (!file)
         return { success: false, error: new Error("No file selected") };
 
@@ -27,7 +28,7 @@ export const useFileUpload = () => {
       formData.append("file", file);
 
       try {
-        const result = await trigger(formData);
+        const result: Response = await trigger(formData);
         return { success: true, data: result };
       } catch (error) {
         return { success: false, error };

@@ -4,5 +4,5 @@ export const ROUTES = {
 } as const;
 
 export const API_ROUTES = {
-  upload: "http://localhost:8080/upload",
+  upload: "http://localhost:8080/api/files/upload",
 } as const;

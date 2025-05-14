@@ -1,110 +1,160 @@
 "use client";
-
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import fileIcon from "@/public/file.svg";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
+import { DetectionResult } from "@/components/DetectionResult";
+import { Response } from "@/types/response.type";
+import { UploadDrawer } from "@/components/UploadDrawer";
 
-export default function UploadSection() {
+type UploadResult =
+  | { success: true; data: Response }
+  | { success: false; error: unknown; data?: undefined };
+
+export const UploadSection = () => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [uploadResult, setUploadResult] = useState<UploadResult>();
+  const [showResult, setShowResult] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { isUploading, uploadFileToServer } = useFileUpload();
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (uploadResult?.success) {
+      const delay = Math.floor(Math.random() * 3000) + 2000;
+      timer = setTimeout(() => {
+        setShowResult(true);
+      }, delay);
+    } else {
+      setShowResult(false);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [uploadResult]);
+
   useDragAndDrop((file) => {
-    setSelectedFile(file);
-    setIsDrawerOpen(true);
+    handleFileSelect(file);
   });
 
   const handleFileSelect = useCallback((file: File) => {
     setSelectedFile(file);
     setIsDrawerOpen(true);
+    setUploadResult(undefined);
+    setShowResult(false);
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      handleFileSelect(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileSelect(file);
     }
   };
 
-  const handleButtonClick = () => {
+  const triggerFileInput = () => {
     inputRef.current?.click();
   };
 
   const handleUpload = async () => {
-    const result = await uploadFileToServer(selectedFile);
-    if (result.success) {
+    if (!selectedFile) return;
+
+    try {
+      const result = await uploadFileToServer(selectedFile);
+      setUploadResult(result as UploadResult);
+    } catch (error) {
+      setUploadResult({ success: false, error });
       setIsDrawerOpen(false);
-      alert(`Upload success: ${result.data.message}`);
-    } else {
-      alert(`Upload error: ${result.error}`);
     }
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-4">
-      <div className="relative w-28 h-24">
-        {!isImageLoaded && (
-          <Skeleton className="absolute top-0 left-0 w-full h-full rounded-md" />
-        )}
-        <Image
-          src={fileIcon}
-          alt="Upload file icon"
-          fill
-          className={cn(
-            "object-contain transition-opacity duration-300",
-            isImageLoaded ? "opacity-100" : "opacity-0"
-          )}
-          onLoad={() => setIsImageLoaded(true)}
+    <section className="flex flex-col items-center justify-center gap-4 w-full">
+      {uploadResult?.success && showResult ? (
+        <DetectionResult
+          response={uploadResult.data}
+          file={selectedFile}
+          onReset={() => {
+            setSelectedFile(undefined);
+            setUploadResult(undefined);
+            setIsDrawerOpen(false);
+          }}
         />
-      </div>
-
-      <input
-        type="file"
-        ref={inputRef}
-        className="hidden"
-        onChange={handleInputChange}
-      />
-
-      <Button type="button" onClick={handleButtonClick}>
-        Choose file
-      </Button>
-
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-sm p-4">
-            <DrawerHeader>
-              <DrawerTitle>Upload File</DrawerTitle>
-            </DrawerHeader>
-
-            {selectedFile && (
-              <div className="flex flex-col items-center gap-4 mt-4">
-                <p className="text-sm text-gray-500">{selectedFile.name}</p>
-                <Button
-                  variant="secondary"
-                  onClick={handleUpload}
-                  disabled={isUploading}
-                  className="w-full"
-                >
-                  {isUploading ? "Uploading..." : "Upload File"}
-                </Button>
-              </div>
-            )}
+      ) : uploadResult?.success ? (
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-28 h-24">
+            <Image
+              src={fileIcon}
+              alt="Processing file"
+              fill
+              className="object-contain opacity-100"
+            />
           </div>
-        </DrawerContent>
-      </Drawer>
+          <p className="text-sm text-gray-500">Analyzing file...</p>
+        </div>
+      ) : (
+        <>
+          <FileIcon
+            isLoaded={isImageLoaded}
+            onLoad={() => setIsImageLoaded(true)}
+          />
+
+          <input
+            type="file"
+            ref={inputRef}
+            className="hidden"
+            onChange={handleInputChange}
+            aria-label="File input"
+          />
+
+          <Button
+            type="button"
+            onClick={triggerFileInput}
+            aria-label="Select file"
+          >
+            Choose file
+          </Button>
+
+          <UploadDrawer
+            isOpen={isDrawerOpen}
+            onOpenChange={setIsDrawerOpen}
+            file={selectedFile}
+            isUploading={isUploading}
+            onUpload={handleUpload}
+          />
+        </>
+      )}
     </section>
   );
-}
+};
+
+type FileIconProps = {
+  isLoaded: boolean;
+  onLoad: () => void;
+};
+
+const FileIcon = ({ isLoaded, onLoad }: FileIconProps) => (
+  <div className="relative w-28 h-24">
+    {!isLoaded && (
+      <Skeleton className="absolute top-0 left-0 w-full h-full rounded-md" />
+    )}
+    <Image
+      src={fileIcon}
+      alt="Upload file icon"
+      fill
+      className={cn(
+        "object-contain transition-opacity duration-300",
+        isLoaded ? "opacity-100" : "opacity-0"
+      )}
+      onLoad={onLoad}
+    />
+  </div>
+);

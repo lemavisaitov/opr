@@ -5,8 +5,12 @@ import { TextProps, TitleProps, TypographyProps } from "./Typography.types";
 import titleStyles from "./Typography.constants";
 
 const Text = ({ children, className }: TextProps): JSX.Element => {
+  return <p className={twMerge("leading-7", className)}>{children}</p>;
+};
+
+const Muted = ({ children, className }: TextProps): JSX.Element => {
   return (
-    <p className={twMerge("leading-7 [&:not(:first-child)]:mt-6", className)}>
+    <p className={twMerge("text-sm text-muted-foreground", className)}>
       {children}
     </p>
   );
@@ -32,5 +36,6 @@ const Typography = ({ children, className }: TypographyProps): ReactNode => {
 
 Typography.Text = Text;
 Typography.Title = Title;
+Typography.Muted = Muted;
 
 export default Typography;
