@@ -1,6 +1,6 @@
 import Image from "next/image";
 import bigLogo from "@/public/logoBig.svg";
-import Typography from "@/components/Typography/Typography";
+import { Typography } from "@/components/Typography/Typography";
 import { Divider } from "@/components/Divider";
 import { JSX } from "react";
 

@@ -29,6 +29,7 @@ export const useFileUpload = () => {
 
       try {
         const result: Response = await trigger(formData);
+        console.log(result);
         return { success: true, data: result };
       } catch (error) {
         return { success: false, error };

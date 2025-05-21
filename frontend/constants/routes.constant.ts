@@ -4,5 +4,5 @@ export const ROUTES = {
 } as const;
 
 export const API_ROUTES = {
-  upload: "http://localhost:8080/api/files/upload",
+  upload: "http://localhost:5000/api/v1/predict",
 } as const;

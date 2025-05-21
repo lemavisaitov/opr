@@ -30,12 +30,13 @@ const Title = ({
   );
 };
 
-const Typography = ({ children, className }: TypographyProps): ReactNode => {
+export const Typography = ({
+  children,
+  className,
+}: TypographyProps): ReactNode => {
   return <div className={className}>{children}</div>;
 };
 
 Typography.Text = Text;
 Typography.Title = Title;
 Typography.Muted = Muted;
-
-export default Typography;

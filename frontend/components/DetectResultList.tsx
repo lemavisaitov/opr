@@ -1,7 +1,7 @@
 import { List } from "@/components/List";
 import { JSX } from "react";
 import { Detection, type Response } from "@/types/response.type";
-import Typography from "./Typography/Typography";
+import { Typography } from "./Typography/Typography";
 import { CircleCheck, CircleX } from "lucide-react";
 
 const YARA_RULES = [

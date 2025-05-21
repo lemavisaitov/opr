@@ -1,7 +1,7 @@
 import { CircleCheck, CircleX, RotateCcw } from "lucide-react";
 import { JSX } from "react";
 import { Button } from "./ui/button";
-import Typography from "./Typography/Typography";
+import { Typography } from "./Typography/Typography";
 import { formatSize } from "@/utils/file.util";
 import { DetectResultList } from "@/components/DetectResultList";
 import { Response } from "@/types/response.type";

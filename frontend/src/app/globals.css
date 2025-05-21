@@ -122,4 +122,27 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  .none-scrollbar-width {
+    scrollbar-width: none;
+  }
+}
+
+@layer utilities {
+  .animate-drop-in {
+    animation: drop-in 5s ease-out both;
+  }
+
+  @keyframes drop-in {
+    0% {
+      /* opacity: 0; */
+      transform: translateX(20px);
+      /* filter: blur(6px); */
+    }
+    100% {
+      /* opacity: 1; */
+      transform: translateX(0);
+      /* filter: blur(0); */
+    }
+  }
 }
