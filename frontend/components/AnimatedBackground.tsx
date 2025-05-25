@@ -5,11 +5,19 @@ import { animate, createScope, Scope } from "animejs";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
+// GREEN P #00FF1E S #377441
+
 interface AnimatedBackgroundProps {
   image?: string | StaticImport;
+  primaryColor: string;
+  secondaryColor: string;
 }
 
-export const AnimatedBackground = ({ image }: AnimatedBackgroundProps) => {
+export const AnimatedBackground = ({
+  image,
+  primaryColor,
+  secondaryColor,
+}: AnimatedBackgroundProps) => {
   const root = useRef<HTMLDivElement | null>(null);
   const scope = useRef<Scope | null>(null);
   const blob1Ref = useRef<HTMLDivElement>(null);
@@ -60,7 +68,7 @@ export const AnimatedBackground = ({ image }: AnimatedBackgroundProps) => {
         ref={blob1Ref}
         className="absolute w-[1500px] h-[1500px] rounded-full opacity-40 mix-blend-screen blur-[300px]"
         style={{
-          background: "radial-gradient(circle, #00FF1E, transparent 100%)",
+          background: `radial-gradient(circle, ${primaryColor}, transparent 100%)`,
           top: "70%",
           left: "50%",
           transform: "translateX(-50%)",
@@ -70,7 +78,7 @@ export const AnimatedBackground = ({ image }: AnimatedBackgroundProps) => {
         ref={blob2Ref}
         className="absolute w-[1000px] h-[1000px] rounded-full opacity-100 mix-blend-screen blur-[300px]"
         style={{
-          background: "radial-gradient(circle, #377441, transparent 100%)",
+          background: `radial-gradient(circle,${secondaryColor}, transparent 100%)`,
           top: "40%",
           left: "40%",
           transform: "translateX(-50%)",

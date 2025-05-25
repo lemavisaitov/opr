@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/constants/routes.constant";
-import { Response } from "@/types/response.type";
+import { PredictionResponse } from "@/types/response.type";
 import { useCallback } from "react";
 import useSWRMutation from "swr/mutation";
 
@@ -20,7 +20,7 @@ export const useFileUpload = () => {
   const { trigger, isMutating } = useSWRMutation(API_ROUTES.upload, uploadFile);
 
   const uploadFileToServer = useCallback(
-    async (file: File | undefined) => {
+    async (file: File | null) => {
       if (!file)
         return { success: false, error: new Error("No file selected") };
 
@@ -28,8 +28,8 @@ export const useFileUpload = () => {
       formData.append("file", file);
 
       try {
-        const result: Response = await trigger(formData);
-        console.log(result);
+        const result: PredictionResponse = await trigger(formData);
+        // console.log(result);
         return { success: true, data: result };
       } catch (error) {
         return { success: false, error };

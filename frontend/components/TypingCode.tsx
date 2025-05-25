@@ -22,11 +22,9 @@ export default function TypingCode({
   useLayoutEffect(() => {
     if (!codeRef.current) return;
 
-    // Очищаем контейнер
     codeRef.current.innerHTML = "";
 
-    // Создаем элементы для каждой строки
-    const lineElements = raw.map((line, lineIndex) => {
+    const lineElements = raw.map((line) => {
       const lineContainer = document.createElement("div");
       lineContainer.className = "line-container block min-h-[1.2em] mb-0.5";
 
@@ -40,7 +38,6 @@ export default function TypingCode({
       return { container: lineContainer, element: lineEl };
     });
 
-    // Анимируем каждую строку
     const animations: gsap.core.Tween[] = [];
     const splitInstances: SplitText[] = [];
 

@@ -1,8 +1,9 @@
 import { JSX, ReactNode } from "react";
 import { Typography } from "@/components/Typography/Typography";
-import { List } from "@/components/List";
+// import { List } from "@/components/List";
 import { cn } from "@/lib/utils";
 import TypingCode from "@/components/TypingCode";
+import { PredictionResponse } from "@/types/response.type";
 
 interface CodeBlockProps {
   children: ReactNode;
@@ -39,29 +40,36 @@ interface CodeBlockContentProps {
 }
 
 const CodeBlockContent = ({ content }: CodeBlockContentProps) => {
-  const formatJson = (obj: any) => {
+  const formatJson = (obj: unknown) => {
+    if (!obj) return "";
+
     if (typeof obj === "string") {
       try {
-        obj = JSON.parse(obj);
+        obj = JSON.parse(obj) as PredictionResponse;
       } catch {
         return obj;
       }
     }
-    return JSON.stringify(obj, null, 2);
+    return JSON.stringify(obj, null, 4);
   };
 
-  const raw = typeof content === "object" ? formatJson(content) : content;
-  const lines = raw.split("\n");
-  console.log(raw.split("\n"));
+  // Handle undefined content
+  const raw = content
+    ? typeof content === "object"
+      ? formatJson(content)
+      : content
+    : "";
+  const lines = (raw as string).split("\n"); // Fallback to array with empty string
+
   return (
     <div className="flex w-full bg-black/20 text-gray-100 rounded-md overflow-hidden">
-      <div className="text-right text-gray-500 px-3 py-2 select-none">
+      {/* <div className="text-right text-gray-500 px-3 py-2 select-none">
         {lines.map((_: string, index: number) => (
           <div key={index} className="leading-5">
             {index + 1}
           </div>
         ))}
-      </div>
+      </div> */}
       <pre className="px-4 py-2 w-full overflow-auto">
         <TypingCode raw={lines} step={40} lineStep={50} />
       </pre>

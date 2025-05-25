@@ -1,10 +1,22 @@
-interface Detection {
-  ruleName: string;
+interface InfluentialFeature {
+  name:
+    | "file_size"
+    | "max_section_size"
+    | "number_of_sections"
+    | "byte_freq_156"
+    | "byte_freq_74";
+  value: number;
+  z_score: number;
 }
 
-interface Response {
-  detections: Detection[] | null;
-  verdict: "Clean" | "Malicious";
+interface PredictionResponse {
+  confidense: {
+    benign: number;
+    malicious: number;
+  };
+  influential_features: InfluentialFeature[];
+  explanation: string;
+  prediction: "benign" | "malicious";
 }
 
-export { type Detection, type Response };
+export { type PredictionResponse };

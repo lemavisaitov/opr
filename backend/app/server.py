@@ -10,7 +10,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={
       r"/api/v1/predict": {
-        "origins": ["http://localhost:3000"],
+        "origins": ["http://localhost:3000","http://localhost:5173"],
         "methods": ["POST"],
         "allow_headers": ["Content-Type"]
     }
