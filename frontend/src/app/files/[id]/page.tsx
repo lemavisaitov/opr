@@ -2,154 +2,97 @@
 
 import { JSX, useEffect, useState, useMemo } from "react";
 import Image from "next/image";
-
-import { AnimatedBackground } from "@/components/AnimatedBackground";
-import { CodeBlock } from "@/components/CodeBlock";
 import { Typography } from "@/components/Typography/Typography";
 import { Header } from "@/components/Header";
-
 import bigLogo from "@/public/logoBig.svg";
-import background from "@/public/background.png";
 import happyDogImage from "@/public/happinesDog.svg";
 import angryDogImage from "@/public/angryDog.svg";
-
 import { useFileStore } from "@/stores/file.store";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { PredictionResponse } from "@/types/response.type";
-import { NOTIFICATION_TEXT } from "@/constants/text.constant";
-import { formatSize } from "@/utils/file.util";
+import { Button } from "@/components/ui/button";
+import { ReportSection } from "@/components/ReportSection";
+import sniffingDog from "@/public/sniffingDog.svg";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { AnimatedDogImage } from "@/components/AnimatedDogImage";
 
-/**
- * Verdict presets that are applied to the UI once the backend finishes analysing the file.
- * Add more layouts here if your model starts returning additional classes.
- */
-const benignVerdict = {
-  primaryColor: "#00FF1E",
-  secondaryColor: "#377441",
+const benignVerdict: { image: StaticImport } = {
   image: happyDogImage,
-  verdictText: "Verdict: No malware has been detected, and the file is secure.",
 };
 
-const maliciousVerdict = {
-  primaryColor: "#FF0000",
-  secondaryColor: "#671111",
+const maliciousVerdict: { image: StaticImport } = {
   image: angryDogImage,
-  verdictText:
-    "Verdict: Malware detected! The file is malicious and should be quarantined.",
 };
 
-/**
- * Dynamically maps model predictions to the correct UI palette.
- */
+// const TEST_PREDICTION_RESPONSE: PredictionResponse = {
+//   confidense: { benign: 1, malicious: 0 },
+//   influentialFeatures: [],
+//   explanation: "",
+//   prediction: "benign",
+// };
+
 const getVerdict = (prediction: PredictionResponse["prediction"] | undefined) =>
   prediction === "malicious" ? maliciousVerdict : benignVerdict;
 
 const Page = (): JSX.Element => {
   const { currentFile } = useFileStore();
+  console.log(currentFile);
   const { uploadFileToServer } = useFileUpload();
   const [reportAnalysis, setReportAnalysis] = useState<
     PredictionResponse | undefined
   >();
 
-  /**
-   * Upload the file & store the response once the user selects a new file.
-   */
   const fetchReportAnalysis = async () => {
-    if (!currentFile) return;
+    // if (!currentFile) return;
+
     try {
       const response = await uploadFileToServer(currentFile);
-      setReportAnalysis(response.data);
+      console.log("uploadFileToServer response:", response);
+      if (response.success) setReportAnalysis(response.data);
     } catch (err) {
-      console.log(err);
+      console.log("ERROR");
       setReportAnalysis(undefined);
     }
   };
 
   useEffect(() => {
     fetchReportAnalysis();
-    // Only re‑run when the file changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentFile]);
 
   const verdict = useMemo(
     () => getVerdict(reportAnalysis?.prediction),
     [reportAnalysis?.prediction]
   );
-
-  /**
-   * Fallback text while waiting for the backend so the screen does not appear empty.
-   */
-  const resultText = reportAnalysis
-    ? verdict.verdictText +
-      "\n" +
-      `Name: ${currentFile?.name}` +
-      "\n" +
-      `Size: ${formatSize(currentFile?.size as number)}` +
-      "\n" +
-      `LastModified: ${new Date(currentFile?.lastModified as number)}`
-    : "Analysing file … please wait.";
-
+  console.log(reportAnalysis);
   return (
-    <>
-      <AnimatedBackground
-        image={background}
-        primaryColor={verdict.primaryColor}
-        secondaryColor={verdict.secondaryColor}
-      />
-      <main className="flex items-end gap-16">
-        <div className="overflow-y-hidden h-screen">
-          {/* Logo */}
-          <div className="flex items-center justify-center gap-2 my-8">
+    <main className="flex flex-col relative items-center justify-between w-full h-full overflow-hidden">
+      <section className="flex items-center justify-between gap-2 my-8 w-full px-64">
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2 items-center justify-start">
             <Image src={bigLogo} alt="CyberSniffer logo" />
             <Typography.Title className="font-medium">
               CyberSniffer
             </Typography.Title>
           </div>
-
-          {/* Analysis blocks */}
-          <ul className="max-w-2xl max-h-[800px] overflow-y-scroll none-scrollbar-width rounded-2xl [&>section]:mb-4">
-            <CodeBlock>
-              <CodeBlock.Header title="Result" className="rounded-t-2xl" />
-              <CodeBlock.Content content={resultText} />
-            </CodeBlock>
-
-            <CodeBlock>
-              <CodeBlock.Header title="Details" className="rounded-t-2xl" />
-              <CodeBlock.Content
-                content={
-                  reportAnalysis
-                    ? (reportAnalysis as object)
-                    : "Waiting for analysis …"
-                }
-              />
-            </CodeBlock>
-
-            <CodeBlock>
-              <CodeBlock.Header
-                title="Notification"
-                className="rounded-t-2xl"
-              />
-              <CodeBlock.Content content={NOTIFICATION_TEXT} />
-            </CodeBlock>
-          </ul>
+          <Typography.Title level={2}>Analysis result</Typography.Title>
         </div>
-
-        {/* Verdict visual */}
-        <div className="flex flex-col items-center gap-4">
-          <Image
-            src={verdict.image}
-            alt={reportAnalysis?.prediction ?? "benign"}
-            height={480}
-            className={`
-    ${reportAnalysis?.prediction === "malicious" && "transform translate-y-10"}
-  `}
-            width={480}
-            priority
-          />
-          <Header className="bg-black/40 rounded-2xl h-min mb-2" />
+        <div className="max-w-96 h-full relative">
+          <Typography.Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+            tempus a erat quis auctor. Nulla facilisi. Sed ut rhoncus lorem. Nam
+            placerat,
+          </Typography.Text>
+          <Button className="absolute bottom-0">Upload</Button>
         </div>
-      </main>
-    </>
+      </section>
+      <ReportSection reportAnalysis={Boolean(reportAnalysis)} />
+      <AnimatedDogImage
+        reportAnalysis={reportAnalysis}
+        verdictImage={verdict.image}
+        loadingDogImage={sniffingDog}
+      />
+      <Header className="relative bottom-0 bg-black/40 rounded-2xl h-min mb-2" />
+    </main>
   );
 };
 

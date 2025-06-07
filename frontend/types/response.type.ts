@@ -14,7 +14,7 @@ interface PredictionResponse {
     benign: number;
     malicious: number;
   };
-  influential_features: InfluentialFeature[];
+  influentialFeatures: InfluentialFeature[];
   explanation: string;
   prediction: "benign" | "malicious";
 }

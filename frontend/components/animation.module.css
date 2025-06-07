@@ -1,0 +1,50 @@
+.animate {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.animate::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  left: -50%;
+  top: -150%;
+  width: 200%;
+  height: 400%;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-size: 100%100%, 50%50%;
+  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+  background-image: conic-gradient(
+    #d7e7ff 0%,
+    #4896e4 20%,
+    #7c7bd2 43%,
+    #cd666f 64%,
+    #000000 70%,
+    #d7e7ff 100%
+  );
+  animation: bgRotate 8s cubic-bezier(0.91, 0.05, 0.55, 0.96) infinite;
+}
+
+.animate::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 1px;
+  top: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  background: rgba(0, 0, 0, 1);
+  border-radius: 24px;
+}
+
+@keyframes bgRotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
