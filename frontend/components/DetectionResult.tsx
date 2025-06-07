@@ -1,4 +1,3 @@
-import { Response } from "@/types/response.type";
 import { DetectionDetails } from "@/components/DetectionDetails";
 
 type DetectionResultProps = {
@@ -13,7 +12,7 @@ export const DetectionResult = ({
   onReset,
 }: DetectionResultProps) => (
   <div className="w-full max-w-2xl p-6">
-    <h2 className="text-xl font-bold mb-4">Scan Result: {response.verdict}</h2>
+    {/* <h2 className="text-xl font-bold mb-4">Scan Result: {response.verdict}</h2> */}
 
     {file && (
       <div className="mb-4">

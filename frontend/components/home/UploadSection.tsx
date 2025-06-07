@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import fileIcon from "@/public/file.svg";
@@ -8,8 +9,10 @@ import { cn } from "@/lib/utils";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import { DetectionResult } from "@/components/DetectionResult";
-import { Response } from "@/types/response.type";
 import { UploadDrawer } from "@/components/UploadDrawer";
+
+import { useRouter } from "next/navigation";
+import { useFileStore } from "@/stores/file.store";
 
 type UploadResult =
   | { success: true; data: Response }
@@ -22,8 +25,10 @@ export const UploadSection = () => {
   const [uploadResult, setUploadResult] = useState<UploadResult>();
   const [showResult, setShowResult] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { setCurrentFile } = useFileStore();
+  const router = useRouter();
 
-  const { isUploading, uploadFileToServer } = useFileUpload();
+  const { isUploading } = useFileUpload();
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -64,16 +69,10 @@ export const UploadSection = () => {
     inputRef.current?.click();
   };
 
-  const handleUpload = async () => {
+  const handleUpload = () => {
     if (!selectedFile) return;
-
-    try {
-      const result = await uploadFileToServer(selectedFile);
-      setUploadResult(result as UploadResult);
-    } catch (error) {
-      setUploadResult({ success: false, error });
-      setIsDrawerOpen(false);
-    }
+    setCurrentFile(selectedFile);
+    router.push(`/files/${selectedFile.name}`);
   };
 
   return (

@@ -1,6 +1,89 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@tailwind utilities;
+
+@layer utilities {
+  .test-bg-red {
+    background-color: hotpink;
+  }
+  .animation-delay-75 {
+    animation-delay: 75ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .gradient-glow {
+    background: linear-gradient(
+      to right,
+      #439ddf 13%,
+      #4f87ed 35%,
+      #9476c5 47%,
+      #bc688e 51%,
+      #d6645d 56%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 500% auto;
+    animation: textShine 5s ease-in-out infinite alternate;
+    text-shadow: -5px 0 32px rgba(67, 157, 223, 0.25),
+      -2px 0 32px rgba(79, 157, 223, 0.25), 0px 0 32px rgba(148, 118, 197, 0.25),
+      2px 0 32px rgba(188, 104, 142, 0.25), 5px 0 32px rgba(214, 100, 93, 0.25);
+  }
+  .dot-glow {
+    text-shadow: 0 0 16px rgba(214, 100, 93, 1);
+  }
+  .animate-bounce-dots {
+    animation: textShine 5s ease-in-out infinite alternate,
+      bounce-dots 1.4s ease-in-out infinite alternate;
+  }
+
+  .animate-scale {
+    animation: scale 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes scale {
+    0% {
+      transform: scale(0.75);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes bounce-dots {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-0.5rem);
+    }
+  }
+
+  @keyframes textShine {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -79,6 +162,8 @@ body {
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+
+  --fade-in: fadeIn 10s ease-in-out;
 }
 
 .dark {
@@ -121,5 +206,9 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .none-scrollbar-width {
+    scrollbar-width: none;
   }
 }

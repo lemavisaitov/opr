@@ -1,0 +1,154 @@
+# Общие системные файлы
+.DS_Store
+Thumbs.db
+*.swp
+._*
+.Spotlight-V100
+.Trashes
+
+# Файлы IDE и редакторов
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Логи и временные файлы
+*.log
+*.tmp
+*.temp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Зависимости
+node_modules/
+bower_components/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store/
+
+# Кэши
+.cache/
+.turbo/
+.next/
+.nuxt/
+out/
+dist/
+build/
+.serverless/
+.serverless_nextjs/
+
+# Окружение
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# Тестовые покрытия
+coverage/
+.nyc_output/
+*.lcov
+
+# Документация
+docs/_build/
+site/
+
+# Бинарные файлы
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.class
+*.jar
+*.pyc
+*.o
+
+# OS-специфичные файлы
+ehthumbs.db
+[Tt]humbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Для проектов на Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.venv/
+venv/
+ENV/
+
+# Для проектов на Rust
+/target/
+**/*.rs.bk
+
+# Для проектов на Java
+*.war
+*.ear
+*.nar
+*.class
+*.jar
+
+# Для проектов на C/C++
+*.a
+*.la
+*.lo
+*.o
+*.obj
+*.out
+
+# Для проектов на Ruby
+*.gem
+.bundle/
+.ruby-version
+.rvmrc
+
+# Для проектов на Go
+/bin/
+/pkg/
+vendor/
+/go/pkg/
+/go/bin/
+
+# Для проектов на PHP
+/vendor/
+composer.lock
+.phpunit.result.cache
+
+# Для проектов на Android
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+local.properties
+*.keystore
+*.jks
+
+# Для проектов на iOS
+*.ipa
+*.xcuserstate
+*.xcworkspace
+xcuserdata/
+Pods/
+DerivedData/
+build/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcworkspace/contents.xcworkspacedata

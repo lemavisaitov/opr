@@ -1,0 +1,52 @@
+.vault/
+.data/
+# Игнорируем системные и редакторские файлы
+**/.git/
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+**/__pycache__/
+**/*.py[cod]
+**/*.so
+**/.env
+**/.venv/
+**/env/
+**/venv/
+**/ENV/
+**/VIRTUAL_ENV/
+**/vault/
+# Игнорируем логи и кеш
+**/*.log
+**/.cache/
+**/.pytest_cache/
+
+# Игнорируем установочные и временные файлы
+**/dist/
+**/build/
+**/*.egg-info/
+**/.eggs/
+**/pip-wheel-metadata/
+**/htmlcov/
+**/.coverage*
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Игнорируем зависимости (если они устанавливаются через COPY + pip install)
+**/requirements.txt  # если зависимости копируются отдельно
+**/Pipfile
+**/Pipfile.lock
+**/poetry.lock
+**/pyproject.toml  # если не используется для сборки
+
+# Игнорируем тестовые и документационные файлы (если они не нужны в образе)
+**/tests/
+**/docs/
+**/examples/
+
+# Игнорируем большие файлы (медиа, датасеты и т. д.)
+**/*.jpg
+**/*.png
+**/*.csv
+**/*.zip
+**/*.tar.gz
